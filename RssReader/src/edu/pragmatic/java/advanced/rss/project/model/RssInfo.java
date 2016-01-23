@@ -1,12 +1,15 @@
 package edu.pragmatic.java.advanced.rss.project.model;
 
-import com.sun.syndication.feed.synd.SyndContent;
+import java.util.Date;
 
+import com.sun.syndication.feed.synd.SyndContent;
+//TODO - add comparision on date
 public class RssInfo {
 	private String uri;
 	private String title;
 	private String author;
 	private SyndContent description;
+	private Date pubDate;
 	private boolean isVisited;
 
 	public String getUri() {
@@ -39,6 +42,14 @@ public class RssInfo {
 
 	public void setDescription(SyndContent description) {
 		this.description = description;
+	}
+
+	public Date getPubDate() {
+		return pubDate;
+	}
+
+	public void setPubDate(Date pubDate) {
+		this.pubDate = pubDate;
 	}
 
 	public boolean isVisited() {

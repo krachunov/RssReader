@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
@@ -61,6 +60,7 @@ public class MyRssReader implements RssOption {
 			currentFeed.setUri(syndEntryImpl.getUri());
 			currentFeed.setDescription(((SyndEntryImpl) object)
 					.getDescription());
+			currentFeed.setPubDate(syndEntryImpl.getPublishedDate());
 
 			getAllFeeds().add(currentFeed);
 		}
