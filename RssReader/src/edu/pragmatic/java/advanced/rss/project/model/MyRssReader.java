@@ -93,6 +93,7 @@ public class MyRssReader implements RssOption {
 		for (Entry<String, List<RssInfo>> entry : getAllFeeds().entrySet()) {
 			allNews.addAll(entry.getValue());
 		}
+		Collections.sort(allNews);
 		return allNews;
 
 	}
@@ -108,6 +109,7 @@ public class MyRssReader implements RssOption {
 				}
 			}
 		}
+		Collections.sort(allUnreadNews);
 		return allUnreadNews;
 	}
 }
