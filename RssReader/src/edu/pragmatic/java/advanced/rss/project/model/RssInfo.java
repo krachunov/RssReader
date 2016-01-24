@@ -2,9 +2,6 @@ package edu.pragmatic.java.advanced.rss.project.model;
 
 import java.util.Date;
 
-import com.sun.syndication.feed.synd.SyndContent;
-
-//TODO - add comparision on date
 public class RssInfo implements Comparable<RssInfo> {
 	private String uri;
 	private String title;
@@ -63,8 +60,9 @@ public class RssInfo implements Comparable<RssInfo> {
 
 	@Override
 	public String toString() {
-		return String.format("Date: %s\nTitle: %s\nAuthor: %s\nDescription: %s ",pubDate.toString(), title,
-				author, description);
+		return String.format(
+				"Date: %s\nTitle: %s\nAuthor: %s\nDescription: %s ",
+				pubDate.toString(), title, author, description);
 
 	}
 

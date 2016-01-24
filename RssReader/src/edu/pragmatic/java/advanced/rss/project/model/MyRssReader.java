@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -13,22 +15,19 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
 public class MyRssReader implements RssOption {
-	private List<RssInfo> allFeeds;
 
-	public MyRssReader(List<RssInfo> allFeeds) {
-		this.allFeeds = new ArrayList<>();
+	private Map<String, List<RssInfo>> allFeeds;
+
+	public MyRssReader() {
+		this.allFeeds = new TreeMap<String, List<RssInfo>>();
 	}
 
-	public List<RssInfo> getAllFeeds() {
+	public Map<String, List<RssInfo>> getAllFeeds() {
 		return allFeeds;
 	}
 
-	public void setAllFeeds(List<RssInfo> allFeeds) {
+	public void setAllFeeds(Map<String, List<RssInfo>> allFeeds) {
 		this.allFeeds = allFeeds;
-	}
-
-	public MyRssReader() {
-		this.allFeeds = new ArrayList<RssInfo>();
 	}
 
 	@Override
@@ -51,6 +50,7 @@ public class MyRssReader implements RssOption {
 			e.printStackTrace();
 		}
 		final List<?> entries = feed.getEntries();
+		List<RssInfo> allFeeds = new ArrayList<>();
 		for (Object object : entries) {
 			final SyndEntryImpl syndEntryImpl = (SyndEntryImpl) object;
 			RssInfo currentFeed = new RssInfo();
@@ -61,9 +61,9 @@ public class MyRssReader implements RssOption {
 			currentFeed.setDescription(((SyndEntryImpl) object)
 					.getDescription().getValue());
 			currentFeed.setPubDate(syndEntryImpl.getPublishedDate());
-
-			getAllFeeds().add(currentFeed);
+			allFeeds.add(currentFeed);
 		}
+		getAllFeeds().put(url, allFeeds);
 
 	}
 
