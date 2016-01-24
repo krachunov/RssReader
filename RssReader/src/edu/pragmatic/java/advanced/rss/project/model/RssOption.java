@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface RssOption {
-	Map<String, List<RssInfo>> getAllFeeds();
+	Map<String, List<RssInfo>> getAllSources();
 
 	void addFeedSorce(String url);
 

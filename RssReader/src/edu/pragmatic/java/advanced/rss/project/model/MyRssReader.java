@@ -31,11 +31,11 @@ public class MyRssReader implements RssOption {
 		this.allSources = new TreeMap<String, List<RssInfo>>();
 	}
 
-	public Map<String, List<RssInfo>> getAllFeeds() {
+	public Map<String, List<RssInfo>> getAllSources() {
 		return allSources;
 	}
 
-	public void setAllFeeds(Map<String, List<RssInfo>> allFeeds) {
+	public void setAllSources(Map<String, List<RssInfo>> allFeeds) {
 		this.allSources = allFeeds;
 	}
 
@@ -74,7 +74,7 @@ public class MyRssReader implements RssOption {
 			allFeeds.add(currentFeed);
 			Collections.sort(allFeeds);
 		}
-		getAllFeeds().put(feed.getTitle(), allFeeds);
+		getAllSources().put(feed.getTitle(), allFeeds);
 	}
 
 	/**
@@ -83,15 +83,15 @@ public class MyRssReader implements RssOption {
 	 * @return - true if removed or false if it is not removed or does not exist
 	 */
 	@Override
-	public boolean removeFeedSorce(String url) {
-		final List<RssInfo> remove = this.allSources.remove(url);
+	public boolean removeFeedSorce(String title) {
+		final List<RssInfo> remove = getAllSources().remove(title);
 		return remove != null ? true : false;
 	}
 
 	@Override
 	public List<String> displayAllSources() {
 		List<String> allSources = new ArrayList<>();
-		for (Entry<String, List<RssInfo>> entry : getAllFeeds().entrySet()) {
+		for (Entry<String, List<RssInfo>> entry : getAllSources().entrySet()) {
 			allSources.add(entry.getKey());
 		}
 		return allSources;
@@ -101,7 +101,7 @@ public class MyRssReader implements RssOption {
 	@Override
 	public List<RssInfo> displayAllNews() {
 		List<RssInfo> allNews = new ArrayList<>();
-		for (Entry<String, List<RssInfo>> entry : getAllFeeds().entrySet()) {
+		for (Entry<String, List<RssInfo>> entry : getAllSources().entrySet()) {
 			allNews.addAll(entry.getValue());
 		}
 		Collections.sort(allNews);
@@ -112,7 +112,7 @@ public class MyRssReader implements RssOption {
 	@Override
 	public List<RssInfo> displayingOnlyUnreadNews() {
 		List<RssInfo> allUnreadNews = new ArrayList<RssInfo>();
-		for (Entry<String, List<RssInfo>> entry : getAllFeeds().entrySet()) {
+		for (Entry<String, List<RssInfo>> entry : getAllSources().entrySet()) {
 			final List<RssInfo> newsFromCurrentSource = entry.getValue();
 			for (RssInfo rssInfo : newsFromCurrentSource) {
 				if (!rssInfo.isVisited()) {
