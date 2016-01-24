@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -62,11 +64,17 @@ public class MyRssReader implements RssOption {
 					.getDescription().getValue());
 			currentFeed.setPubDate(syndEntryImpl.getPublishedDate());
 			allFeeds.add(currentFeed);
+			Collections.sort(allFeeds);
 		}
 		getAllFeeds().put(url, allFeeds);
 
 	}
 
+	/**
+	 * Removes the selected source
+	 * 
+	 * @return - true if removed or false if it is not removed or does not exist
+	 */
 	@Override
 	public boolean removeFeedSorce(String url) {
 		final List<RssInfo> remove = this.allFeeds.remove(url);
@@ -81,14 +89,25 @@ public class MyRssReader implements RssOption {
 
 	@Override
 	public List<RssInfo> displayAllNews() {
-		return null;
+		List<RssInfo> allNews = new ArrayList<>();
+		for (Entry<String, List<RssInfo>> entry : getAllFeeds().entrySet()) {
+			allNews.addAll(entry.getValue());
+		}
+		return allNews;
 
 	}
 
 	@Override
 	public List<RssInfo> displayingOnlyUnreadNews() {
-		return null;
-
+		List<RssInfo> allUnreadNews = new ArrayList<RssInfo>();
+		for (Entry<String, List<RssInfo>> entry : getAllFeeds().entrySet()) {
+			final List<RssInfo> newsFromCurrentSource = entry.getValue();
+			for (RssInfo rssInfo : newsFromCurrentSource) {
+				if (!rssInfo.isVisited()) {
+					allUnreadNews.add(rssInfo);
+				}
+			}
+		}
+		return allUnreadNews;
 	}
-
 }

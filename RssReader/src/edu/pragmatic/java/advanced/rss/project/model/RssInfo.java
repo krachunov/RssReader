@@ -63,12 +63,10 @@ public class RssInfo implements Comparable<RssInfo> {
 		return String.format(
 				"Date: %s\nTitle: %s\nAuthor: %s\nDescription: %s ",
 				pubDate.toString(), title, author, description);
-
 	}
 
 	@Override
 	public int compareTo(RssInfo o) {
 		return getPubDate().compareTo(o.getPubDate());
 	}
-
 }
