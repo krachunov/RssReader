@@ -74,10 +74,7 @@ public class MyRssReader implements RssOption {
 			allFeeds.add(currentFeed);
 			Collections.sort(allFeeds);
 		}
-		// test
-		// getAllFeeds().put(url, allFeeds);
 		getAllFeeds().put(feed.getTitle(), allFeeds);
-
 	}
 
 	/**
