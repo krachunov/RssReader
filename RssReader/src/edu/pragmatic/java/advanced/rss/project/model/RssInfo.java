@@ -1,3 +1,6 @@
+/**
+ * @author Krachunov
+ */
 package edu.pragmatic.java.advanced.rss.project.model;
 
 import java.util.Date;

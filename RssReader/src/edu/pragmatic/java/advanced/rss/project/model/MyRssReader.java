@@ -1,3 +1,6 @@
+/**
+ * @author Krachunov
+ */
 package edu.pragmatic.java.advanced.rss.project.model;
 
 import java.io.IOException;
@@ -18,18 +21,22 @@ import com.sun.syndication.io.XmlReader;
 
 public class MyRssReader implements RssOption {
 
-	private Map<String, List<RssInfo>> allFeeds;
+	/**
+	 * @key - URL
+	 * @value - List<RssInfo>
+	 */
+	private Map<String, List<RssInfo>> allSources;
 
 	public MyRssReader() {
-		this.allFeeds = new TreeMap<String, List<RssInfo>>();
+		this.allSources = new TreeMap<String, List<RssInfo>>();
 	}
 
 	public Map<String, List<RssInfo>> getAllFeeds() {
-		return allFeeds;
+		return allSources;
 	}
 
 	public void setAllFeeds(Map<String, List<RssInfo>> allFeeds) {
-		this.allFeeds = allFeeds;
+		this.allSources = allFeeds;
 	}
 
 	@Override
@@ -51,10 +58,11 @@ public class MyRssReader implements RssOption {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		final List<?> entries = feed.getEntries();
+		@SuppressWarnings("unchecked")
+		final List<SyndEntryImpl> entries = feed.getEntries();
 		List<RssInfo> allFeeds = new ArrayList<>();
-		for (Object object : entries) {
-			final SyndEntryImpl syndEntryImpl = (SyndEntryImpl) object;
+		for (SyndEntryImpl object : entries) {
+			final SyndEntryImpl syndEntryImpl = object;
 			RssInfo currentFeed = new RssInfo();
 
 			currentFeed.setTitle(syndEntryImpl.getTitle());
@@ -66,7 +74,9 @@ public class MyRssReader implements RssOption {
 			allFeeds.add(currentFeed);
 			Collections.sort(allFeeds);
 		}
-		getAllFeeds().put(url, allFeeds);
+		// test
+		// getAllFeeds().put(url, allFeeds);
+		getAllFeeds().put(feed.getTitle(), allFeeds);
 
 	}
 
@@ -77,13 +87,17 @@ public class MyRssReader implements RssOption {
 	 */
 	@Override
 	public boolean removeFeedSorce(String url) {
-		final List<RssInfo> remove = this.allFeeds.remove(url);
+		final List<RssInfo> remove = this.allSources.remove(url);
 		return remove != null ? true : false;
 	}
 
 	@Override
-	public List<RssInfo> displayAllSorces() {
-		return null;
+	public List<String> displayAllSources() {
+		List<String> allSources = new ArrayList<>();
+		for (Entry<String, List<RssInfo>> entry : getAllFeeds().entrySet()) {
+			allSources.add(entry.getKey());
+		}
+		return allSources;
 
 	}
 
