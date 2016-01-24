@@ -68,26 +68,26 @@ public class MyRssReader implements RssOption {
 	}
 
 	@Override
-	public void removeFeedSorce() {
-		// TODO Auto-generated method stub
+	public boolean removeFeedSorce(String url) {
+		final List<RssInfo> remove = this.allFeeds.remove(url);
+		return remove != null ? true : false;
+	}
+
+	@Override
+	public List<RssInfo> displayAllSorces() {
+		return null;
 
 	}
 
 	@Override
-	public void displayAllSorces() {
-		// TODO Auto-generated method stub
+	public List<RssInfo> displayAllNews() {
+		return null;
 
 	}
 
 	@Override
-	public void displayAllNews() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void displayingOnlyUnreadNews() {
-		// TODO Auto-generated method stub
+	public List<RssInfo> displayingOnlyUnreadNews() {
+		return null;
 
 	}
 

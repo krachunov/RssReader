@@ -1,9 +1,15 @@
 package edu.pragmatic.java.advanced.rss.project.model;
 
-public interface RssOption  {
+import java.util.List;
+
+public interface RssOption {
 	void addFeedSorce(String url);
-	void removeFeedSorce();
-	void displayAllSorces();
-	void displayAllNews();
-	void displayingOnlyUnreadNews();
+
+	boolean removeFeedSorce(String url);
+
+	List<RssInfo> displayAllSorces();
+
+	List<RssInfo> displayAllNews();
+
+	List<RssInfo> displayingOnlyUnreadNews();
 }

@@ -9,6 +9,8 @@ public class DemoRss {
 	public static void main(String[] args) {
 		MyRssReader reader = new MyRssReader();
 		reader.addFeedSorce("https://sports.yahoo.com/top/rss.xml");
+		reader.addFeedSorce("https://sports.yahoo.com/golf/blog/devil_ball_golf/rss.xml");
+		
 
 		final Map<String, List<RssInfo>> allFeeds = reader.getAllFeeds();
 		for (Entry<String, List<RssInfo>> entry : allFeeds.entrySet()) {

@@ -14,7 +14,7 @@ public class RssInfo implements Comparable<RssInfo> {
 		return uri;
 	}
 
-	public void setUri(String uri) {
+	protected void setUri(String uri) {
 		this.uri = uri;
 	}
 
@@ -22,7 +22,7 @@ public class RssInfo implements Comparable<RssInfo> {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	protected void setTitle(String title) {
 		this.title = title;
 	}
 
@@ -30,7 +30,7 @@ public class RssInfo implements Comparable<RssInfo> {
 		return author;
 	}
 
-	public void setAuthor(String author) {
+	protected void setAuthor(String author) {
 		this.author = author;
 	}
 
@@ -38,7 +38,7 @@ public class RssInfo implements Comparable<RssInfo> {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	protected void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -46,7 +46,7 @@ public class RssInfo implements Comparable<RssInfo> {
 		return pubDate;
 	}
 
-	public void setPubDate(Date pubDate) {
+	protected void setPubDate(Date pubDate) {
 		this.pubDate = pubDate;
 	}
 
