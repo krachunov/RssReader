@@ -59,7 +59,7 @@ public class MyRssReader implements RssOption {
 			currentFeed.setAuthor(syndEntryImpl.getAuthor());
 			currentFeed.setUri(syndEntryImpl.getUri());
 			currentFeed.setDescription(((SyndEntryImpl) object)
-					.getDescription());
+					.getDescription().getValue());
 			currentFeed.setPubDate(syndEntryImpl.getPublishedDate());
 
 			getAllFeeds().add(currentFeed);

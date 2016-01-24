@@ -10,7 +10,7 @@ public class DemoRss {
 
 		final List<RssInfo> allFeeds = reader.getAllFeeds();
 		for (RssInfo rssInfo : allFeeds) {
-//			System.out.println(rssInfo.toString());
+			System.out.println(rssInfo.toString());
 		}
 	}
 

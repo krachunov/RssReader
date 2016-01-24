@@ -3,12 +3,13 @@ package edu.pragmatic.java.advanced.rss.project.model;
 import java.util.Date;
 
 import com.sun.syndication.feed.synd.SyndContent;
+
 //TODO - add comparision on date
-public class RssInfo {
+public class RssInfo implements Comparable<RssInfo> {
 	private String uri;
 	private String title;
 	private String author;
-	private SyndContent description;
+	private String description;
 	private Date pubDate;
 	private boolean isVisited;
 
@@ -36,11 +37,11 @@ public class RssInfo {
 		this.author = author;
 	}
 
-	public SyndContent getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(SyndContent description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -59,10 +60,17 @@ public class RssInfo {
 	public void setVisited(boolean isVisited) {
 		this.isVisited = isVisited;
 	}
+
 	@Override
-	public String toString(){
-		return String.format("Title: %s\nAuthor: %s.\nDescription: %s ",title,author,description);
-		
+	public String toString() {
+		return String.format("Date: %s\nTitle: %s\nAuthor: %s\nDescription: %s ",pubDate.toString(), title,
+				author, description);
+
+	}
+
+	@Override
+	public int compareTo(RssInfo o) {
+		return getPubDate().compareTo(o.getPubDate());
 	}
 
 }
