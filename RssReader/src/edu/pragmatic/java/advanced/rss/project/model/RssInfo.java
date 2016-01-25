@@ -4,29 +4,18 @@
 package edu.pragmatic.java.advanced.rss.project.model;
 
 import java.util.Date;
+import java.util.List;
 
 import com.sun.syndication.feed.synd.SyndContent;
+import com.sun.syndication.feed.synd.SyndEntryImpl;
 
-/**
- * 
- * @param uri
- *            - String
- * @param title
- *            - String
- * @param author
- *            - String
- * @param description
- *            - SyndContent
- * @param pubDate
- *            - Date
- * @param isVisited
- *            - boolean
- */
 public class RssInfo implements Comparable<RssInfo> {
 	private String uri;
 	private String title;
 	private String author;
 	private SyndContent description;
+	private String imageUrl;
+	private List<SyndEntryImpl> media;
 	private Date pubDate;
 	private boolean isVisited;
 
@@ -100,6 +89,40 @@ public class RssInfo implements Comparable<RssInfo> {
 
 	/**
 	 * 
+	 * @return - type SyndImage
+	 */
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	/**
+	 * 
+	 * @param image
+	 *            - String
+	 */
+	public void setImageUrl(String image) {
+		this.imageUrl = image;
+	}
+
+	/**
+	 * 
+	 * @return - type SyndEntryImpl
+	 */
+	public List<SyndEntryImpl> getMedia() {
+		return media;
+	}
+
+	/**
+	 * 
+	 * @param media
+	 *            - type SyndEntryImpl
+	 */
+	public void setMedia(List<SyndEntryImpl> media) {
+		this.media = media;
+	}
+
+	/**
+	 * 
 	 * @return - type Date
 	 */
 	public Date getPubDate() {
@@ -137,9 +160,10 @@ public class RssInfo implements Comparable<RssInfo> {
 	 */
 	@Override
 	public String toString() {
-		return String.format(
-				"Date: %s\nTitle: %s\nAuthor: %s\nDescription: %s ",
-				pubDate.toString(), title, author, description.getValue());
+		return String
+				.format("Date: %s\nTitle: %s\nAuthor: %s\nDescription: %s\nImage: %s\nMedia: %s",
+						pubDate.toString(), title, author,
+						description.getValue(), imageUrl, media);
 	}
 
 	@Override

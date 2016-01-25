@@ -40,6 +40,7 @@ public class MyRssReader implements RssOption {
 		this.allSources = allFeeds;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void addFeedSorce(String url) {
 		URL feedSource = null;
@@ -59,19 +60,20 @@ public class MyRssReader implements RssOption {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		@SuppressWarnings("unchecked")
 		final List<SyndEntryImpl> entries = feed.getEntries();
 		List<RssInfo> allFeeds = new ArrayList<>();
-		for (SyndEntryImpl object : entries) {
-			final SyndEntryImpl syndEntryImpl = object;
+		for (SyndEntryImpl syndEntryImpl : entries) {
+
 			RssInfo currentFeed = new RssInfo();
 
 			currentFeed.setTitle(syndEntryImpl.getTitle());
 			currentFeed.setAuthor(syndEntryImpl.getAuthor());
 			currentFeed.setUri(syndEntryImpl.getUri());
-			final SyndContent description = ((SyndEntryImpl) object).getDescription();
-			currentFeed.setDescription(description);
+			currentFeed.setDescription(syndEntryImpl.getDescription());
+			currentFeed.setImageUrl(feed.getImage().getUrl());
 			currentFeed.setPubDate(syndEntryImpl.getPublishedDate());
+			final List enclosures = syndEntryImpl.getEnclosures();
+			currentFeed.setMedia(enclosures);
 			allFeeds.add(currentFeed);
 			Collections.sort(allFeeds);
 		}
