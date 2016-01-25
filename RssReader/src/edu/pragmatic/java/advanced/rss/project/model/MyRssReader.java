@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
+import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
@@ -68,8 +69,8 @@ public class MyRssReader implements RssOption {
 			currentFeed.setTitle(syndEntryImpl.getTitle());
 			currentFeed.setAuthor(syndEntryImpl.getAuthor());
 			currentFeed.setUri(syndEntryImpl.getUri());
-			currentFeed.setDescription(((SyndEntryImpl) object)
-					.getDescription().getValue());
+			final SyndContent description = ((SyndEntryImpl) object).getDescription();
+			currentFeed.setDescription(description);
 			currentFeed.setPubDate(syndEntryImpl.getPublishedDate());
 			allFeeds.add(currentFeed);
 			Collections.sort(allFeeds);
