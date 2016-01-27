@@ -12,7 +12,7 @@ public class DemoRss {
 	public static void main(String[] args) throws IOException {
 		Scanner sc = new Scanner(System.in);
 		String inputUri = sc.nextLine();
-		MyRssReader reader = new MyRssReader();
+		RssOption reader = new MyRssReader();
 		if (!inputUri.equals("")) {
 			reader.addFeedSorce(inputUri);
 

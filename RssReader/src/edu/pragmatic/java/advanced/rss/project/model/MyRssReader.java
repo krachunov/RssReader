@@ -184,8 +184,7 @@ public class MyRssReader implements RssOption, Serializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Map<String, List<RssInfo>> deserialize(
-			String fileToDeserialize) {
+	private static Map<String, List<RssInfo>> deserialize(String fileToDeserialize) {
 		FileInputStream fileInput = null;
 		try {
 			fileInput = new FileInputStream(fileToDeserialize);
