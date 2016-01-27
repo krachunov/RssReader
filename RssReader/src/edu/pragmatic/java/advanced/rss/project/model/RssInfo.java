@@ -3,13 +3,15 @@
  */
 package edu.pragmatic.java.advanced.rss.project.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 
-public class RssInfo implements Comparable<RssInfo> {
+public class RssInfo implements Comparable<RssInfo> ,Serializable{
+	private static final long serialVersionUID = -8605831172961667470L;
 	private String uri;
 	private String title;
 	private String author;

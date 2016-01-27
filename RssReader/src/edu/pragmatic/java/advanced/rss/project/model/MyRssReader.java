@@ -3,7 +3,18 @@
  */
 package edu.pragmatic.java.advanced.rss.project.model;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import java.io.Serializable;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,23 +24,19 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
-public class MyRssReader implements RssOption {
-
-	/**
-	 * @key - URL
-	 * @value - List<RssInfo>
-	 */
+public class MyRssReader implements RssOption, Serializable {
+	static final String FILE_TO_LOAD = "clientSetings";
+	private static final long serialVersionUID = 1L;
 	private Map<String, List<RssInfo>> allSources;
 
 	public MyRssReader() {
-		this.allSources = new TreeMap<String, List<RssInfo>>();
+		loadPreviewSession();
 	}
 
 	public Map<String, List<RssInfo>> getAllSources() {
@@ -43,10 +50,25 @@ public class MyRssReader implements RssOption {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void addFeedSorce(String url) {
+
+		SyndFeed feed = createFeed(url);
+		final List<SyndEntryImpl> entries = feed.getEntries();
+
+		List<RssInfo> allFeeds = new ArrayList<>();
+		for (SyndEntryImpl syndEntryImpl : entries) {
+			RssInfo currentFeed = createRssInfoObject(feed, syndEntryImpl);
+			allFeeds.add(currentFeed);
+		}
+		Collections.sort(allFeeds);
+		getAllSources().put(feed.getTitle(), allFeeds);
+	}
+
+	private SyndFeed createFeed(String url) {
 		URL feedSource = null;
 		try {
 			feedSource = new URL(url);
 		} catch (MalformedURLException e) {
+			createLogFile(e);
 			e.printStackTrace();
 		}
 		SyndFeedInput input = new SyndFeedInput();
@@ -54,30 +76,31 @@ public class MyRssReader implements RssOption {
 		try {
 			feed = input.build(new XmlReader(feedSource));
 		} catch (IllegalArgumentException e) {
+			createLogFile(e);
 			e.printStackTrace();
 		} catch (FeedException e) {
+			createLogFile(e);
 			e.printStackTrace();
 		} catch (IOException e) {
+			createLogFile(e);
 			e.printStackTrace();
 		}
-		final List<SyndEntryImpl> entries = feed.getEntries();
-		List<RssInfo> allFeeds = new ArrayList<>();
-		for (SyndEntryImpl syndEntryImpl : entries) {
+		return feed;
+	}
 
-			RssInfo currentFeed = new RssInfo();
+	private RssInfo createRssInfoObject(SyndFeed feed,
+			SyndEntryImpl syndEntryImpl) {
+		RssInfo currentFeed = new RssInfo();
 
-			currentFeed.setTitle(syndEntryImpl.getTitle());
-			currentFeed.setAuthor(syndEntryImpl.getAuthor());
-			currentFeed.setUri(syndEntryImpl.getUri());
-			currentFeed.setDescription(syndEntryImpl.getDescription());
-			currentFeed.setImageUrl(feed.getImage().getUrl());
-			currentFeed.setPubDate(syndEntryImpl.getPublishedDate());
-			final List enclosures = syndEntryImpl.getEnclosures();
-			currentFeed.setMedia(enclosures);
-			allFeeds.add(currentFeed);
-			Collections.sort(allFeeds);
-		}
-		getAllSources().put(feed.getTitle(), allFeeds);
+		currentFeed.setTitle(syndEntryImpl.getTitle());
+		currentFeed.setAuthor(syndEntryImpl.getAuthor());
+		currentFeed.setUri(syndEntryImpl.getUri());
+		currentFeed.setDescription(syndEntryImpl.getDescription());
+		currentFeed.setImageUrl(feed.getImage().getUrl());
+		currentFeed.setPubDate(syndEntryImpl.getPublishedDate());
+		final List enclosures = syndEntryImpl.getEnclosures();
+		currentFeed.setMedia(enclosures);
+		return currentFeed;
 	}
 
 	/**
@@ -125,5 +148,111 @@ public class MyRssReader implements RssOption {
 		}
 		Collections.sort(allUnreadNews);
 		return allUnreadNews;
+	}
+
+	public void serialize() {
+
+		File file = new File(FILE_TO_LOAD);
+		FileOutputStream fileOutput = null;
+		try {
+			fileOutput = new FileOutputStream(file);
+		} catch (FileNotFoundException e) {
+			createLogFile(e);
+			e.printStackTrace();
+		}
+		ObjectOutputStream objectOutput = null;
+		try {
+			objectOutput = new ObjectOutputStream(fileOutput);
+			objectOutput.writeObject(getAllSources());
+		} catch (IOException e) {
+			createLogFile(e);
+			e.printStackTrace();
+		} finally {
+
+			try {
+				if (fileOutput != null) {
+					fileOutput.close();
+				}
+				if (objectOutput != null) {
+					objectOutput.close();
+				}
+			} catch (IOException e) {
+				createLogFile(e);
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Map<String, List<RssInfo>> deserialize(
+			String fileToDeserialize) {
+		FileInputStream fileInput = null;
+		try {
+			fileInput = new FileInputStream(fileToDeserialize);
+		} catch (FileNotFoundException e) {
+			createLogFile(e);
+			e.printStackTrace();
+		}
+		ObjectInputStream objectImput = null;
+		try {
+			objectImput = new ObjectInputStream(fileInput);
+		} catch (IOException e) {
+			createLogFile(e);
+			e.printStackTrace();
+		}
+		try {
+			Map<String, List<RssInfo>> deserializeClient = null;
+			try {
+				deserializeClient = (Map<String, List<RssInfo>>) objectImput
+						.readObject();
+			} catch (ClassNotFoundException e) {
+				createLogFile(e);
+				e.printStackTrace();
+			} catch (IOException e) {
+				createLogFile(e);
+				e.printStackTrace();
+			}
+			return deserializeClient;
+		} finally {
+			try {
+				if (fileInput != null) {
+					fileInput.close();
+				}
+				if (objectImput != null) {
+					objectImput.close();
+				}
+			} catch (IOException e) {
+				createLogFile(e);
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	private void loadPreviewSession() {
+		if (chekFileExist(FILE_TO_LOAD)) {
+			setAllSources(deserialize(FILE_TO_LOAD));
+		} else {
+			setAllSources(new TreeMap<String, List<RssInfo>>());
+		}
+	}
+
+	private static boolean chekFileExist(String fileName) {
+		File file = new File(fileName);
+		if (file.exists() && !file.isDirectory()) {
+			return true;
+		}
+		return false;
+	}
+
+	private static void createLogFile(Exception e) {
+		String errorLogFileName = "errorLog.log";
+		Writer writer = null;
+		try {
+			writer = new FileWriter(errorLogFileName, true);
+		} catch (IOException e1) {
+			e1.printStackTrace(new PrintWriter(new BufferedWriter(writer), true));
+		}
+		e.printStackTrace(new PrintWriter(new BufferedWriter(writer), true));
 	}
 }

@@ -3,6 +3,7 @@
  */
 package edu.pragmatic.java.advanced.rss.project.model;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,5 +19,7 @@ public interface RssOption {
 	List<RssInfo> displayAllNews();
 
 	List<RssInfo> displayingOnlyUnreadNews();
+
+	void serialize() throws IOException;
 
 }
