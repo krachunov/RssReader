@@ -3,18 +3,14 @@
  */
 package edu.pragmatic.java.advanced.rss.project.model;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.io.Serializable;
-import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -30,7 +26,7 @@ import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
-public class MyRssReader implements RssOption, Serializable {
+public class MyRssReader implements RssOption, Serializable, LogError {
 	static final String FILE_TO_LOAD = "clientSetings";
 	private static final long serialVersionUID = 1L;
 	private Map<String, List<RssInfo>> allSources;
@@ -88,6 +84,7 @@ public class MyRssReader implements RssOption, Serializable {
 		return feed;
 	}
 
+	@SuppressWarnings("unchecked")
 	private RssInfo createRssInfoObject(SyndFeed feed,
 			SyndEntryImpl syndEntryImpl) {
 		RssInfo currentFeed = new RssInfo();
@@ -98,6 +95,7 @@ public class MyRssReader implements RssOption, Serializable {
 		currentFeed.setDescription(syndEntryImpl.getDescription());
 		currentFeed.setImageUrl(feed.getImage().getUrl());
 		currentFeed.setPubDate(syndEntryImpl.getPublishedDate());
+		@SuppressWarnings("rawtypes")
 		final List enclosures = syndEntryImpl.getEnclosures();
 		currentFeed.setMedia(enclosures);
 		return currentFeed;
@@ -184,7 +182,7 @@ public class MyRssReader implements RssOption, Serializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static Map<String, List<RssInfo>> deserialize(String fileToDeserialize) {
+	private Map<String, List<RssInfo>> deserialize(String fileToDeserialize) {
 		FileInputStream fileInput = null;
 		try {
 			fileInput = new FileInputStream(fileToDeserialize);
@@ -236,7 +234,7 @@ public class MyRssReader implements RssOption, Serializable {
 		}
 	}
 
-	private static boolean chekFileExist(String fileName) {
+	private boolean chekFileExist(String fileName) {
 		File file = new File(fileName);
 		if (file.exists() && !file.isDirectory()) {
 			return true;
@@ -244,14 +242,4 @@ public class MyRssReader implements RssOption, Serializable {
 		return false;
 	}
 
-	private static void createLogFile(Exception e) {
-		String errorLogFileName = "errorLog.log";
-		Writer writer = null;
-		try {
-			writer = new FileWriter(errorLogFileName, true);
-		} catch (IOException e1) {
-			e1.printStackTrace(new PrintWriter(new BufferedWriter(writer), true));
-		}
-		e.printStackTrace(new PrintWriter(new BufferedWriter(writer), true));
-	}
 }

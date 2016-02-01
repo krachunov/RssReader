@@ -1,12 +1,10 @@
-/**
- * @author Krachunov
- */
 package edu.pragmatic.java.advanced.rss.project.model;
 
-import java.io.IOException;
-import java.io.Serializable;
+
 import java.util.List;
 import java.util.Map;
+
+import edu.pragmatic.java.advanced.rss.project.model.RssInfo;
 
 public interface RssOption {
 	Map<String, List<RssInfo>> getAllSources();
