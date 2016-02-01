@@ -168,7 +168,6 @@ public class RssInfo implements Comparable<RssInfo> ,Serializable{
 						description.getValue(), imageUrl, media);
 	}
 
-	@Override
 	public int compareTo(RssInfo o) {
 		return getPubDate().compareTo(o.getPubDate());
 	}
