@@ -44,7 +44,6 @@ public class MyRssReader implements RssOption, Serializable, LogError {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public void addFeedSorce(String url) {
 
 		SyndFeed feed = createFeed(url);
