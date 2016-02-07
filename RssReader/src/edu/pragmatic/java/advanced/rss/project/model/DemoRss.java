@@ -4,7 +4,14 @@
 package edu.pragmatic.java.advanced.rss.project.model;
 
 import java.io.IOException;
+<<<<<<< HEAD
 
+=======
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Scanner;
+>>>>>>> branch 'master' of https://github.com/krachunov/RssReader.git
 
 import edu.pragmatic.java.advanced.rss.project.UI.StartDisplay;
 import javafx.application.Application;
@@ -12,7 +19,7 @@ import javafx.application.Application;
 public class DemoRss {
 
 	public static void main(String[] args) throws IOException {
-		// RssOption reader = new MyRssReader();
+		RssOption reader = new MyRssReader();
 		// Scanner sc = new Scanner(System.in);
 		// String inputUri = sc.nextLine();
 		// if (!inputUri.equals("")) {
@@ -20,16 +27,23 @@ public class DemoRss {
 		//
 		// }
 
-		// reader.addFeedSorce("https://sports.yahoo.com/top/rss.xml");
+		reader.addFeedSorce("https://sports.yahoo.com/top/rss.xml");
 		// reader.addFeedSorce("https://sports.yahoo.com/golf/blog/devil_ball_golf/rss.xml");
 		// reader.removeFeedSorce("https://sports.yahoo.com/golf/blog/devil_ball_golf/rss.xml");
 		// reader.addFeedSorce("http://rss.cnn.com/rss/edition.rss");
 
 		// Test displayAllSources
-		// final List<String> displayAllSources = reader.displayAllSources();
-		// for (String string : displayAllSources) {
-		// System.out.println(string);
-		// }
+		final Map<String, List<RssInfo>> desc = reader.getAllSources();
+
+		for (Entry<String, List<RssInfo>> entry : desc.entrySet()) {
+			final List<RssInfo> valueRssInfo = entry.getValue();
+			
+			for (RssInfo rssInfo : valueRssInfo) {
+				System.out.println();
+				System.out.println(rssInfo.getDescription().getInterface());
+			}
+		}
+
 		// RssOption reader = new MyRssReader();
 		// reader.addFeedSorce("https://sports.yahoo.com/top/rss.xml");
 		// reader.addFeedSorce("https://sports.yahoo.com/golf/blog/devil_ball_golf/rss.xml");
@@ -46,7 +60,7 @@ public class DemoRss {
 		// System.out.println(rssInfo.getTitle());
 		// }
 		// reader.serialize();
-		Application.launch(StartDisplay.class, args);
+		// Application.launch(StartDisplay.class, args);
 	}
 
 }
