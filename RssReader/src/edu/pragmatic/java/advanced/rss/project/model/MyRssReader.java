@@ -58,7 +58,7 @@ public class MyRssReader implements RssOption, Serializable, LogError {
 		getAllSources().put(feed.getTitle(), allFeeds);
 	}
 
-	private SyndFeed createFeed(String url) {
+	public SyndFeed createFeed(String url) {
 		URL feedSource = null;
 		try {
 			feedSource = new URL(url);
@@ -84,7 +84,7 @@ public class MyRssReader implements RssOption, Serializable, LogError {
 	}
 
 	@SuppressWarnings("unchecked")
-	private RssInfo createRssInfoObject(SyndFeed feed,
+	public RssInfo createRssInfoObject(SyndFeed feed,
 			SyndEntryImpl syndEntryImpl) {
 		RssInfo currentFeed = new RssInfo();
 

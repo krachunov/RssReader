@@ -4,8 +4,7 @@
 package edu.pragmatic.java.advanced.rss.project.model;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
+
 
 import edu.pragmatic.java.advanced.rss.project.UI.StartDisplay;
 import javafx.application.Application;
