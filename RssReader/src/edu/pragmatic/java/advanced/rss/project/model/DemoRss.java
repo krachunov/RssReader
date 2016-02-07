@@ -4,14 +4,10 @@
 package edu.pragmatic.java.advanced.rss.project.model;
 
 import java.io.IOException;
-<<<<<<< HEAD
-
-=======
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
->>>>>>> branch 'master' of https://github.com/krachunov/RssReader.git
 
 import edu.pragmatic.java.advanced.rss.project.UI.StartDisplay;
 import javafx.application.Application;
