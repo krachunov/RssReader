@@ -57,6 +57,7 @@ public class StartDisplay extends Application {
 	final WebView browser = new WebView();
 	final WebEngine webEngine = browser.getEngine();
 	private List<RssInfo> currenFeeds;
+	private ObservableList<String> observableList;
 
 	/// по някаква причина не иска да ми cast-не set
 	/// към list затова:
@@ -213,9 +214,11 @@ public class StartDisplay extends Application {
 		// reader.addFeedSorce("http://rss.cnn.com/rss/edition.rss");
 
 		Controller control = new Controller();
-
+		
 		allSources = FXCollections.observableMap(control.getAllSources());
-		sourcesObservable = new ListView(FXCollections.observableList(convertor(allSources.keySet())));
+		observableList = FXCollections.observableList(convertor(allSources.keySet()));
+//		observableList = FXCollections.observableList()
+		sourcesObservable = new ListView(observableList);
 		newsForSourceObservable = new ListView<>();
 		newsForSourceObservable.setId("list-view");
 		sourcesObservable.setId("list-view");
@@ -223,7 +226,7 @@ public class StartDisplay extends Application {
 		scene = new Scene(root, 1000, 800);
 
 		addField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			
+
 			// ne raboti... ne moga da pokazha dobawqneto
 			@Override
 			public void handle(KeyEvent ke) {
@@ -231,7 +234,7 @@ public class StartDisplay extends Application {
 					String url = addField.getText();
 
 					System.out.println("add test");
-
+					//control.addSource(url);
 					SyndFeed feed = control.createFeed(url);
 					final List<SyndEntryImpl> entries = feed.getEntries();
 
@@ -241,7 +244,21 @@ public class StartDisplay extends Application {
 						allFeeds.add(currentFeed);
 					}
 					allSources.put(feed.getTitle(), allFeeds);
-					sourcesObservable = new ListView(FXCollections.observableList(convertor(allSources.keySet())));
+					System.out.println(allSources.get(feed.getTitle()).get(1).toString());
+					observableList = FXCollections.observableList(convertor(allSources.keySet()));
+					// System.out.println(allSources.get(feed.getTitle()));
+//					 sourcesObservable = new ListView(FXCollections.observableList(convertor(allSources.keySet())));
+//					sourcesObservable.getItems().add(feed.getTitle());
+
+//					allSources = FXCollections.observableMap(control.getAllSources());
+//					sourcesObservable = new ListView(FXCollections.observableList(convertor(allSources.keySet())));
+					
+
+//					allSources = FXCollections.observableMap(control.getAllSources());
+//
+//		//		observableList.remove(1);
+//					sourcesObservable = new ListView(observableList);
+//					
 
 				}
 			}
@@ -251,18 +268,21 @@ public class StartDisplay extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
-				Object tmp = sourcesObservable.getSelectionModel().getSelectedItem();
-				// така сме взели елемента от
-				// sourcesObservable, който искаме да
-				// изтрием
-				// трябва да видим как да го
-				// преманем от въпросния sourceObservable
-				// и после как да премахнем елемента
-				// с key = tmp от map-a allSources,
-				// което трябва да се отрази и на map-a
-				// в reader-a, щото нали е оbservable
+				final int selectedIdx = sourcesObservable.getSelectionModel().getSelectedIndex();
+				final String selectedItemKey = (String) sourcesObservable.getSelectionModel().getSelectedItem();
+				if (selectedIdx != -1) {
+					Object itemToRemove = sourcesObservable.getSelectionModel().getSelectedItem();
+
+					final int newSelectedIdx = (selectedIdx == sourcesObservable.getItems().size() - 1)
+							? selectedIdx - 1 : selectedIdx;
+
+					sourcesObservable.getItems().remove(selectedIdx);
+					sourcesObservable.getSelectionModel().select(newSelectedIdx);
+				}
+				allSources.remove(selectedItemKey);
 			}
 		});
+
 		sourcesObservable.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -304,26 +324,18 @@ public class StartDisplay extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
-				// textFeed.setText(...);
-				// ... e по някакъв начин String със
-				// сложена информацията от
-				// controller.нещо(), което нещо именно
-				// връща
-				// следващия на този RssInfo:
-				// currentFeeds.stream().filter(cf ->
-				// cf.getTitle().equals(newsForSourceObservable.getSelectionModel().getSelectedItem()))
+				int i = newsForSourceObservable.getSelectionModel().getSelectedIndex()+1;
+				newsForSourceObservable.getSelectionModel().select(i);
+				webEngine.loadContent(
+						control.printDescription(
+								newsForSourceObservable.getSelectionModel().getSelectedItem().toString()),
+						"text/html");
 			}
 		});
 
 		openLinkBtn.setOnAction(new EventHandler<ActionEvent>() {
 
-			// final WebView browser = new WebView();
-			// final WebEngine webEngine = browser.getEngine();
-			// webEngine.load(... .getURL()?);
-			// ... е controller.нещо(), което нещо именно
-			// връща
-			// този RssInfo: currentFeeds.stream().filter(cf ->
-			// cf.getTitle().equals(newsForSourceObservable.getSelectionModel().getSelectedItem()))
+
 			@Override
 			public void handle(ActionEvent event) {
 				// root.setCenter(browser);

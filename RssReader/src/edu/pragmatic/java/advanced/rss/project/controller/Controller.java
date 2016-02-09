@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -22,19 +23,28 @@ public class Controller {
 	
 	public void addSource(String url){
 		
-		SyndFeed feed = createFeed(url);
-		final List<SyndEntryImpl> entries = feed.getEntries();
-
-		List<RssInfo> allFeeds = new ArrayList<>();
-		for (SyndEntryImpl syndEntryImpl : entries) {
-//			RssInfo currentFeed = createRssInfoObject(feed, syndEntryImpl);
-//			allFeeds.add(currentFeed);
-		}
-		Collections.sort(allFeeds);
+//		SyndFeed feed = createFeed(url);
+//		final List<SyndEntryImpl> entries = feed.getEntries();
+//
+//		List<RssInfo> allFeeds = new ArrayList<>();
+//		for (SyndEntryImpl syndEntryImpl : entries) {
+////			RssInfo currentFeed = createRssInfoObject(feed, syndEntryImpl);
+////			allFeeds.add(currentFeed);
+//		}
+//		Collections.sort(allFeeds);
 		reader.addFeedSorce(url);
 		System.out.println("add2 test");
 		
+		
 			
+	}
+	public List<String> displayAllSources() {
+		List<String> allSources = new ArrayList<>();
+		for (Entry<String, List<RssInfo>> entry : getAllSources().entrySet()) {
+			allSources.add(entry.getKey());
+		}
+		return allSources;
+
 	}
 	public RssInfo createRssInfoObject(SyndFeed feed,
 			SyndEntryImpl syndEntryImpl){
@@ -60,16 +70,17 @@ public class Controller {
 		return allNews;
 
 	}
+
 	
 	public String printDescription(String title){
-		RssInfo rssInfo = null;
+
 		for (int i = 0; i < currentFeed.size() ; i++){
 			if (currentFeed.get(i).getTitle().equals(title)){
-				rssInfo = currentFeed.get(i);
+				return currentFeed.get(i).toString();
 			}
 		}
 		
-		return rssInfo.toString();
+		return "No source found";
 	}
 	public RssInfo displaySelectedNews(int index) {
 		RssInfo rssInfo = currentFeed.get(index);

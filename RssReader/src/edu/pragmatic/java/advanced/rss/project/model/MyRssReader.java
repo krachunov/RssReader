@@ -27,7 +27,7 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
 public class MyRssReader implements RssOption, Serializable, LogError {
-	static final String FILE_TO_LOAD = "clientSetings";
+	static final String FILE_TO_LOAD = "clientSetings1";
 	private static final long serialVersionUID = 1L;
 	private Map<String, List<RssInfo>> allSources;
 
@@ -56,6 +56,7 @@ public class MyRssReader implements RssOption, Serializable, LogError {
 		}
 		Collections.sort(allFeeds);
 		getAllSources().put(feed.getTitle(), allFeeds);
+		serialize();
 	}
 
 	public SyndFeed createFeed(String url) {
