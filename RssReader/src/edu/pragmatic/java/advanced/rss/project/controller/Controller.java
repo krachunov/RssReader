@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+<<<<<<< HEAD
 
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -70,6 +71,85 @@ public class Controller {
 		}
 		
 		return rssInfo.toString();
+=======
+import java.util.Map.Entry;
+
+import com.sun.syndication.feed.synd.SyndEntryImpl;
+import com.sun.syndication.feed.synd.SyndFeed;
+
+import edu.pragmatic.java.advanced.rss.project.model.MyRssReader;
+import edu.pragmatic.java.advanced.rss.project.model.RssInfo;
+import edu.pragmatic.java.advanced.rss.project.model.RssOption;
+
+public class Controller {
+	RssOption reader = new MyRssReader();
+
+	List<String> displayAllSources = reader.displayAllSources();
+
+	List<RssInfo> currentFeed = reader.displayAllNews();
+	
+	
+	public void addSource(String url){
+		
+//		SyndFeed feed = createFeed(url);
+//		final List<SyndEntryImpl> entries = feed.getEntries();
+//
+//		List<RssInfo> allFeeds = new ArrayList<>();
+//		for (SyndEntryImpl syndEntryImpl : entries) {
+////			RssInfo currentFeed = createRssInfoObject(feed, syndEntryImpl);
+////			allFeeds.add(currentFeed);
+//		}
+//		Collections.sort(allFeeds);
+		reader.addFeedSorce(url);
+		System.out.println("add2 test");
+		
+		
+			
+	}
+	public List<String> displayAllSources() {
+		List<String> allSources = new ArrayList<>();
+		for (Entry<String, List<RssInfo>> entry : getAllSources().entrySet()) {
+			allSources.add(entry.getKey());
+		}
+		return allSources;
+
+	}
+	public RssInfo createRssInfoObject(SyndFeed feed,
+			SyndEntryImpl syndEntryImpl){
+		
+		return new RssInfo();
+	}
+	
+	public SyndFeed createFeed(String url){
+		return reader.createFeed(url);
+				
+	}
+	 
+	public List<RssInfo> displayAllNews() {
+
+		return currentFeed;
+	}
+	public List<RssInfo> displayAllNews(Object index) {
+		List<RssInfo> allNews = new ArrayList<>();
+		for (RssInfo entry : getAllSources().get(index)) {
+			allNews.add(entry);
+		}
+		Collections.sort(allNews);
+		return allNews;
+
+	}
+
+	
+	public String printDescription(String title){
+
+		for (int i = 0; i < currentFeed.size() ; i++){
+			if (currentFeed.get(i).getTitle().equals(title)){
+				return currentFeed.get(i).toString();
+			}
+		}
+		
+		return "No source found";
+>>>>>>> branch 'master' of https://github.com/krachunov/RssReader.git
 	}
 	public RssInfo displaySelectedNews(int index) {
 		RssInfo rssInfo = currentFeed.get(index);

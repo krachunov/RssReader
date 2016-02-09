@@ -27,6 +27,7 @@ import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
 
 public class MyRssReader implements RssOption, Serializable, LogError {
+<<<<<<< HEAD
 	static final String FILE_TO_LOAD = "clientSetings";
 	private static final long serialVersionUID = 1L;
 	private Map<String, List<RssInfo>> allSources;
@@ -56,6 +57,38 @@ public class MyRssReader implements RssOption, Serializable, LogError {
 		}
 		Collections.sort(allFeeds);
 		getAllSources().put(feed.getTitle(), allFeeds);
+=======
+	static final String FILE_TO_LOAD = "clientSetings1";
+	private static final long serialVersionUID = 1L;
+	private Map<String, List<RssInfo>> allSources;
+
+	public MyRssReader() {
+		loadPreviewSession();
+	}
+
+	public Map<String, List<RssInfo>> getAllSources() {
+		return allSources;
+	}
+
+	public void setAllSources(Map<String, List<RssInfo>> allFeeds) {
+		this.allSources = allFeeds;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void addFeedSorce(String url) {
+
+		SyndFeed feed = createFeed(url);
+		final List<SyndEntryImpl> entries = feed.getEntries();
+
+		List<RssInfo> allFeeds = new ArrayList<>();
+		for (SyndEntryImpl syndEntryImpl : entries) {
+			RssInfo currentFeed = createRssInfoObject(feed, syndEntryImpl);
+			allFeeds.add(currentFeed);
+		}
+		Collections.sort(allFeeds);
+		getAllSources().put(feed.getTitle(), allFeeds);
+		serialize();
+>>>>>>> branch 'master' of https://github.com/krachunov/RssReader.git
 	}
 
 	public SyndFeed createFeed(String url) {
